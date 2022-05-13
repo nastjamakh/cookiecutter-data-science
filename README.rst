@@ -8,6 +8,7 @@ Features
 --------
 
 Includes:
+
 * Makefile
 * linting (black, flake8, mypy and pydocstyle)
 * dependency management with ``poetry``
@@ -37,10 +38,12 @@ Then:
 * Alternatively, run ``make setup_docker`` to develop in a Docker container. This will build a container using Dockerfile and install poetry with dependencies inside the container.
 
 Note that the provided scripts in ``bin`` folder to help you work with the container.
+  
   * Run ``make build`` to build a container, and ``make start`` to start it.
   * Prefix your command with ``./bin/docker-exec.sh`` to run the command inside container. For example, ``./bin/docker-exec.sh poetry install`` would install dependencies in the container.
 
 There are several formatting tools included to ensure consistent Python code.
+
 * ``black`` 
 * ``flake8`` for line length
 * ``mypy`` for typing hints and imports
