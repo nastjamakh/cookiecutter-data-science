@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "{{ cookiecutter.project_slug }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.project_short_description }}"
+authors = ["{{ cookiecutter.full_name.replace("\"", "\\\"") }} <{{ cookiecutter.email }}>"]
+{%- set license_classifiers = {
+    "MIT license": "MIT",
+    "Apache Software License 2.0": "Apache-2.0",
+    "GNU General Public License v3.0": "GPL-3.0-only",
+    "GNU General Public License v2.0": "GPL-2.0-only",
+    "BSD 3-Clause 'New' or 'Revised' License": "BSD-3-Clause",
+    "GNU Lesser General Public License v2.1": "LGPL-2.1-only",
+    "BSD 2-Clause 'Simplified' License": "BSD-2-Clause",
+} %}
+{%- if cookiecutter.open_source_license in license_classifiers %}
+license = "{{ license_classifiers[cookiecutter.open_source_license] }}"
+{%- endif %}
+readme = "README.rst"
+keywords = ["{{ cookiecutter.project_slug }}"]
+repository = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
+
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/issues"
+"Source" = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
+{% if cookiecutter.create_docs == "y" -%}"Documentation" = "https://{{ cookiecutter.project_slug }}.readthedocs.io"{% endif %}
+
+[tool.poetry.dependencies]
+python = "{{cookiecutter.python_version}}"
+
+[tool.poetry.dev-dependencies]
+pip = "*"
+wheel = "*"
+flake8 = "*"
+{%- if cookiecutter.command_line_interface|lower == 'click' -%}Click = "*"{% endif %}
+pytest = "*"
+pytest-runner = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.masonry.api"
+
+{%- if 'none' not in cookiecutter.command_line_interface|lower %}
+[tool.poetry.scripts]
+"{{ cookiecutter.module_name }}" = "cli:cli"
+{%- endif %}
