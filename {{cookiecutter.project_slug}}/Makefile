@@ -4,25 +4,44 @@ PROJECT_NAME = "home-credit-risk"
 
 setup:
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	pip install --user poetry
+	brew install zsh
+
+setup_local:
+	make setup
+	pip install poetry
+	make setup_pyenv
+	make create_virtualenv
+	poetry install
+	pip install wheel
+	poetry add `cat requirements.txt`
+	rm -r requirements.txt
+
+setup_docker:
+	make setup
+	make build
+	make start
+	./bin/docker-exec.sh poetry install
+	./bin/docker-exec.sh pip install wheel
+	./bin/docker-exec.sh poetry add `cat requirements.txt`
+	rm -r requirements.txt
 
 ## Set up python interpreter environment
 setup_pyenv:
-	brew install zsh
 	brew install openssl readline sqlite3 xz zlib
 	brew install pyenv pyenv-virtualenv
 	echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
 	echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
 	echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 	pyenv install {{cookiecutter.python_version}}
+
+create_virtualenv:
 	pyenv virtualenv{{cookiecutter.python_version}} $(PROJECT_NAME)
 	pyenv local $(PROJECT_NAME)
 	@echo ">>> New pyenv virtualenv created. Activate with:pyenv local $(PROJECT_NAME)"
 	
 # Install Python Dependencies
-install: requirements
+install:
 	./bin/docker-exec.sh poetry install
-	poetry add `cat requirements.txt`
 
 # images & containers
 build:
