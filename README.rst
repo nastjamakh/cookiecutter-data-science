@@ -14,8 +14,8 @@ Includes:
 * dependency management with ``poetry``
 * Docker: Dockerfile and bash scripts to create and manage containers
 * pre-commit hooks etc.
-* CLI interface with Click and Fire (optional)
-* CI/CD pipeline in CircleCI
+* CLI interface with ``Click`` and ``Fire`` (optional)
+* CI/CD pipeline in ``CircleCI``
 
 
 Quickstart
